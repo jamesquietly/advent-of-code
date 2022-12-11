@@ -41,4 +41,4 @@ const main = async () => {
   part2(data);
 };
 
-await main();
+main();
