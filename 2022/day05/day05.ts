@@ -10,11 +10,23 @@ const stacks = [
   ["J", "S", "Q", "C", "W", "D", "M"],
 ];
 
-const getLastLetters = () => {
+const stacks2 = [
+  ["B", "V", "S", "N", "T", "C", "H", "Q"],
+  ["W", "D", "B", "G"],
+  ["F", "W", "R", "T", "S", "Q", "B"],
+  ["L", "G", "W", "S", "Z", "J", "D", "N"],
+  ["M", "P", "D", "V", "F"],
+  ["F", "W", "J"],
+  ["L", "N", "Q", "B", "J", "V"],
+  ["G", "T", "R", "C", "J", "Q", "S", "N"],
+  ["J", "S", "Q", "C", "W", "D", "M"],
+];
+
+const getLastLetters = (currStack: string[][]) => {
   let res = "";
-  stacks.forEach((stack) => {
+  currStack.forEach((stack) => {
     const letter = stack[stack.length - 1];
-    res += letter;
+    if (letter) res += letter;
   });
   return res;
 };
@@ -32,8 +44,25 @@ const part1 = (data: number[][]) => {
   data.forEach((move) => {
     moveBox(move[0], move[1], move[2]);
   });
-  const msg = getLastLetters();
+  const msg = getLastLetters(stacks);
   console.log("part 1 boxes on top", msg.toUpperCase());
+};
+
+const moveBox2 = (amount: number, from: number, to: number) => {
+  const removed: string[] = [];
+  for (let i = 0; i < amount; i++) {
+    const box = stacks2[from - 1].pop();
+    if (box) removed.unshift(box);
+  }
+  if (removed.length > 0) stacks2[to - 1] = stacks2[to - 1].concat(removed);
+};
+
+const part2 = (data: number[][]) => {
+  data.forEach((move) => {
+    moveBox2(move[0], move[1], move[2]);
+  });
+  const msg = getLastLetters(stacks2);
+  console.log("part 2 boxes on top", msg.toUpperCase());
 };
 
 const main = async () => {
@@ -46,6 +75,7 @@ const main = async () => {
     .map((val) => val.replace(/\sto\s/, ","))
     .map((val) => val.split(",").map(Number));
   part1(data);
+  part2(data);
 };
 
 main();
